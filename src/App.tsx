@@ -15,9 +15,7 @@ function App() {
 	};
 
 	return (
-		<main className="w-[100vw] h-[100vh] flex items-center justify-center bg-[#2c375f] flex-col">
-			<div>
-			</div>
+		<main className="w-[100vw] h-[100vh] flex items-center justify-center bg-[#2c375f]">
 			<Table date={date} />
 		</main>
 	);
