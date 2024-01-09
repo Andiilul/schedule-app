@@ -1,35 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { Table } from "./components/Table";
 
 function App() {
-  const [count, setCount] = useState(0)
+	const today = new Date();
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	const dday = "1";
+	const mmonth = String(today.getMonth() + 1).padStart(2, "0");
+	const yyear = String(today.getFullYear());
+
+	const date = {
+		day: dday,
+		month: mmonth,
+		year: yyear,
+	};
+
+	return (
+		<main className="w-[100vw] h-[100vh] flex items-center justify-center bg-[#2c375f] flex-col">
+			<div>
+			</div>
+			<Table date={date} />
+		</main>
+	);
 }
 
-export default App
+export default App;
