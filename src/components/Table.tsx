@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { DateSection } from "./Date";
 import { MonthSection } from "./Months";
+import { Memo } from "../IMemo";
 
 interface DateObject {
 	day: string;
@@ -13,6 +14,7 @@ interface TableProps {
 	date: DateObject;
 	focusDate: string;
 	setFocusDate: React.Dispatch<React.SetStateAction<string>>;
+	memo: Memo[];
 }
 const months = [
 	"January",
@@ -33,6 +35,7 @@ export const Table: React.FC<TableProps> = ({
 	date,
 	focusDate,
 	setFocusDate,
+	memo,
 }) => {
 	const [dateMode, setDateMode] = useState<"Date" | "Month">("Date");
 
@@ -136,6 +139,7 @@ export const Table: React.FC<TableProps> = ({
 						focusDate={focusDate}
 						setFocusDate={setFocusDate}
 						previousMonthTotalDay={previousMonthTotalDay}
+						memo={memo}
 					/>
 				</div>
 			) : (

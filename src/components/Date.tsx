@@ -1,3 +1,4 @@
+import { Memo } from "../IMemo";
 import { Cells } from "./Cells";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -10,6 +11,7 @@ interface DateSectionProps {
 	focusDate: string;
 	shownDate: string;
 	setFocusDate: React.Dispatch<React.SetStateAction<string>>;
+	memo: Memo[];
 }
 
 export const DateSection: React.FC<DateSectionProps> = ({
@@ -20,6 +22,7 @@ export const DateSection: React.FC<DateSectionProps> = ({
 	shownDate,
 	previousMonthTotalDay,
 	setFocusDate,
+	memo
 }) => {
 	const cellsDate = new Date(shownDate);
 	const month = String(cellsDate.getMonth() + 1).padStart(2, "0");
@@ -49,7 +52,7 @@ export const DateSection: React.FC<DateSectionProps> = ({
 						onClick={() => setFocusDate(`${year}-${month}-${index + 1}`)}
 						title={`${index + 1} ${longMonth} ${year}`}
 					>
-						<Cells active={`${focusDate}` === `${year}-${month}-${index + 1}`}>
+						<Cells badge={memo.find((memo) => memo.date === `${year}-${month}-${index + 1}`)?.memoList.length} active={`${focusDate}` === `${year}-${month}-${index + 1}`}>
 							{index + 1}
 						</Cells>
 					</div>

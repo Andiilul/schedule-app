@@ -32,7 +32,9 @@ export const Cells: React.FC<CellsProps> = ({
 						{Array.from({ length: badge }).map((_, index) => (
 							<div
 								key={index}
-								className={`h-[3px] rounded-sm bg-blue-${100 * (index + 3)}`}
+								className={`h-[3px] rounded-sm bg-blue-${
+									300 + (index + 1) * 100
+								}`}
 							></div>
 						))}
 					</section>

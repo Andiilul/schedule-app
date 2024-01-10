@@ -1,23 +1,14 @@
 import { ChangeEvent, useState } from "react";
+import { Memo } from "../IMemo";
 
 interface SchedulerProps {
 	focusDate: string;
+	memo: Memo[];
+	setMemo: React.Dispatch<React.SetStateAction<Memo[]>>;
 }
 
-interface IMemoList {
-	content: string;
-	time: string;
-}
-
-interface Memo {
-	date: string;
-	memoList: IMemoList[];
-}
-
-export const Scheduler: React.FC<SchedulerProps> = ({ focusDate }) => {
+export const Scheduler: React.FC<SchedulerProps> = ({ focusDate, memo , setMemo }) => {
 	const [isInput, setIsInput] = useState<boolean>(false);
-
-	const [memo, setMemo] = useState<Memo[]>([]);
 
 	const isMemo = memo.some((item) => item.date === focusDate);
 

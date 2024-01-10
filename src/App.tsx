@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Scheduler } from "./components/Scheduler";
 import { Table } from "./components/Table";
+import { Memo } from "./IMemo";
 
 function App() {
 	const today = new Date();
@@ -20,11 +21,12 @@ function App() {
 		`${date.year}-${date.month}-${date.day}`
 	);
 
+	const [memo, setMemo] = useState<Memo[]>([]);
+
 	return (
 		<main className="max-w-[100vw] gap-4 min-h-[100vh] p-12 overflow-x-hidden flex justify-center bg-main">
-			<Table focusDate={focusDate} setFocusDate={setFocusDate} date={date} />
-			<Scheduler focusDate={focusDate} />
-
+			<Table focusDate={focusDate} memo={memo} setFocusDate={setFocusDate} date={date} />
+			<Scheduler memo={memo} setMemo={setMemo} focusDate={focusDate} />
 		</main>
 	);
 }
