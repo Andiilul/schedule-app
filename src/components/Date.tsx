@@ -45,13 +45,11 @@ export const DateSection: React.FC<DateSectionProps> = ({
 				{/* current month map */}
 				{Array.from({ length: totalDay }).map((_, index) => (
 					<div
+						key={index}
 						onClick={() => setFocusDate(`${year}-${month}-${index + 1}`)}
 						title={`${index + 1} ${longMonth} ${year}`}
 					>
-						<Cells
-							active={`${focusDate}` === `${year}-${month}-${index + 1}`}
-							key={index}
-						>
+						<Cells active={`${focusDate}` === `${year}-${month}-${index + 1}`}>
 							{index + 1}
 						</Cells>
 					</div>

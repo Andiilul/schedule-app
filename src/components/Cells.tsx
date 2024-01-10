@@ -13,7 +13,7 @@ export const Cells: React.FC<CellsProps> = ({
 }) => {
 	if (type === "head") {
 		return (
-			<div className="flex rounded-[4px] text-[18px] h-16 w-20 justify-center items-center text-[#2c88cc] ">
+			<div className="flex rounded-[4px] text-[18px] h-16 w-20 justify-center items-center text-primary ">
 				{children}
 			</div>
 		);
@@ -23,7 +23,7 @@ export const Cells: React.FC<CellsProps> = ({
 		return (
 			<div
 				className={`flex relative font-semibold rounded-[4px] text-[18px] ${
-					active ? "bg-[#53688d]" : "hover:bg-[#323f56]"
+					active ? "bg-focus" : "hover:bg-hover"
 				} h-16 justify-center items-center text-white   cursor-pointer select-none `}
 			>
 				{children}
@@ -49,14 +49,14 @@ export const Cells: React.FC<CellsProps> = ({
 
 	if (type === "blur") {
 		return (
-			<div className="flex font-semibold rounded-[4px] text-[10px] h-16 justify-center items-center text-gray-400 hover:bg-[#282b37] hover:text-[16px] cursor-pointer select-none transition-[200ms]">
+			<div className="flex font-semibold rounded-[4px] text-[10px] h-16 justify-center items-center text-gray-400 hover:bg-lighthover hover:text-[16px] cursor-pointer select-none transition-[200ms]">
 				{children}
 			</div>
 		);
 	}
 	if (type === "month") {
 		return (
-			<div className="flex font-ligth rounded-[4px] text-[16px] h-16 justify-center items-center text-gray-400 hover:bg-[#282b37] hover:text-[18px] cursor-pointer select-none transition-[200ms]">
+			<div className="flex font-ligth rounded-[4px] text-[16px] h-16 justify-center items-center text-gray-400 hover:bg-lighthover hover:text-[18px] cursor-pointer select-none transition-[200ms]">
 				{children}
 			</div>
 		);

@@ -11,6 +11,8 @@ interface DateObject {
 
 interface TableProps {
 	date: DateObject;
+	focusDate: string;
+	setFocusDate: React.Dispatch<React.SetStateAction<string>>;
 }
 const months = [
 	"January",
@@ -27,17 +29,17 @@ const months = [
 	"December",
 ];
 
-export const Table: React.FC<TableProps> = ({ date }) => {
+export const Table: React.FC<TableProps> = ({
+	date,
+	focusDate,
+	setFocusDate,
+}) => {
 	const [dateMode, setDateMode] = useState<"Date" | "Month">("Date");
 
 	const [selectedMonth, setSelectedMonth] = useState<string>(
 		String(date.month)
 	);
 	const [selectedYear, setSelectedYear] = useState<string>(String(date.year));
-
-	const [focusDate, setFocusDate] = useState<string>(
-		`${date.year}-${date.month}-${date.day}`
-	);
 
 	const shownDate = `${selectedYear}-${selectedMonth}-1`;
 	const lastDate = new Date(parseInt(selectedYear), parseInt(selectedMonth), 0);
@@ -81,11 +83,11 @@ export const Table: React.FC<TableProps> = ({ date }) => {
 	};
 
 	return (
-		<main className="flex min-w-[640px] h-max  p-4 flex-col items-center justify-start gap-4 bg-[#1a1c23] rounded-lg">
+		<main className="flex min-w-[640px] h-max  p-4 flex-col items-center justify-start gap-4 bg-dark rounded-lg">
 			<section className="flex items-center w-[50%] justify-between gap-2">
 				<button
 					onClick={handlePrevious}
-					className="rounded-[50%] p-2 text-[14px] text-white bg-[#5799cb] hover:bg-[#2c88cc] transition-[600ms]"
+					className="rounded-[50%] p-2 text-[14px] text-white bg-lighter hover:bg-primary transition-[600ms]"
 					title="left"
 				>
 					<FaChevronLeft />
@@ -94,7 +96,7 @@ export const Table: React.FC<TableProps> = ({ date }) => {
 					title="Month And Year"
 					onClick={() => setDateMode("Month")}
 					className={`flex flex-col  text-white items-center select-none min-w-[200px] rounded-md  ${
-						dateMode === "Date" ? "hover:bg-[#363a49] cursor-pointer" : ""
+						dateMode === "Date" ? "hover:bg-hover cursor-pointer" : ""
 					} transition-[600ms]`}
 				>
 					<div
@@ -118,7 +120,7 @@ export const Table: React.FC<TableProps> = ({ date }) => {
 				</section>
 				<button
 					onClick={handleNext}
-					className="rounded-[50%] p-2 text-[14px] text-white bg-[#5799cb] hover:bg-[#2c88cc] transition-[600ms]"
+					className="rounded-[50%] p-2 text-[14px] text-white bg-lighter hover:bg-primary transition-[600ms]"
 					title="left"
 				>
 					<FaChevronRight />
