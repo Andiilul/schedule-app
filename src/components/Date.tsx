@@ -28,14 +28,14 @@ export const DateSection: React.FC<DateSectionProps> = ({
 
 	return (
 		<main>
-			<div className="grid gap-[2px] rounded-lg grid-cols-7 ">
+			<div className="grid gap-2 rounded-lg grid-cols-7 ">
 				{days.map((_, index) => (
 					<Cells type="head" key={index}>
 						{days[index]}
 					</Cells>
 				))}
 			</div>
-			<section className="grid gap-[2px] rounded-lg grid-cols-7">
+			<section className="grid gap-2 rounded-lg grid-cols-7">
 				{/*  prev month map */}
 				{Array.from({ length: firstDateDay }).map((_, index) => (
 					<Cells type="blur" key={index}>
