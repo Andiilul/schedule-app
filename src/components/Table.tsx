@@ -61,11 +61,13 @@ export const Table: React.FC<TableProps> = ({
 
 	const handlePrevious = () => {
 		if (dateMode === "Date") {
-			if (selectedMonth === "1") {
+			if (selectedMonth === "01") {
 				setSelectedMonth("12");
 				setSelectedYear(String(parseInt(selectedYear) - 1));
 			} else {
-				setSelectedMonth(String(parseInt(selectedMonth) - 1));
+				setSelectedMonth(
+					(parseInt(selectedMonth) - 1).toString().padStart(2, "0")
+				);
 			}
 		} else {
 			setSelectedYear(String(parseInt(selectedYear) - 1));
@@ -138,6 +140,10 @@ export const Table: React.FC<TableProps> = ({
 						shownDate={shownDate}
 						focusDate={focusDate}
 						setFocusDate={setFocusDate}
+						selectedMonth={selectedMonth}
+						setSelectedMonth={setSelectedMonth}
+						selectedYear={selectedYear}
+						setSelectedYear={setSelectedYear}
 						previousMonthTotalDay={previousMonthTotalDay}
 						memo={memo}
 					/>
