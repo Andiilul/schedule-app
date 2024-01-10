@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Cells } from "./Cells";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { DateSection } from "./Date";
+import { MonthSection } from "./Months";
 
 interface DateObject {
 	day: string;
@@ -11,7 +12,6 @@ interface DateObject {
 interface TableProps {
 	date: DateObject;
 }
-const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const months = [
 	"January",
 	"February",
@@ -28,12 +28,18 @@ const months = [
 ];
 
 export const Table: React.FC<TableProps> = ({ date }) => {
+	const [dateMode, setDateMode] = useState<"Date" | "Month">("Date");
+
 	const [selectedMonth, setSelectedMonth] = useState<string>(
 		String(date.month)
 	);
 	const [selectedYear, setSelectedYear] = useState<string>(String(date.year));
 
-	const currentDate = `${selectedYear}-${selectedMonth}-${date.day}`;
+	const [focusDate, setFocusDate] = useState<string>(
+		`${date.year}-${date.month}-${date.day}`
+	);
+
+	const shownDate = `${selectedYear}-${selectedMonth}-1`;
 	const lastDate = new Date(parseInt(selectedYear), parseInt(selectedMonth), 0);
 	const previousMonthLastDate = new Date(
 		parseInt(selectedYear),
@@ -45,90 +51,100 @@ export const Table: React.FC<TableProps> = ({ date }) => {
 		String(previousMonthLastDate.getDate()).padStart(2, "0")
 	);
 
-	const firstDateDay = new Date(currentDate).getDay();
+	const firstDateDay = new Date(shownDate).getDay();
 	const lastDateDay = lastDate.getDay();
 
-	const handlePreviousMonth = () => {
-		if (selectedMonth === "1") {
-			setSelectedMonth("12");
-			setSelectedYear(String(parseInt(selectedYear) - 1));
+	const handlePrevious = () => {
+		if (dateMode === "Date") {
+			if (selectedMonth === "1") {
+				setSelectedMonth("12");
+				setSelectedYear(String(parseInt(selectedYear) - 1));
+			} else {
+				setSelectedMonth(String(parseInt(selectedMonth) - 1));
+			}
 		} else {
-			setSelectedMonth(String(parseInt(selectedMonth) - 1));
+			setSelectedYear(String(parseInt(selectedYear) - 1));
 		}
 	};
 
-	const handleNextMonth = () => {
-		if (selectedMonth === "12") {
-			setSelectedMonth("1");
-			setSelectedYear(String(parseInt(selectedYear) + 1));
+	const handleNext = () => {
+		if (dateMode === "Date") {
+			if (selectedMonth === "12") {
+				setSelectedMonth("1");
+				setSelectedYear(String(parseInt(selectedYear) + 1));
+			} else {
+				setSelectedMonth(String(parseInt(selectedMonth) + 1));
+			}
 		} else {
-			setSelectedMonth(String(parseInt(selectedMonth) + 1));
+			setSelectedYear(String(parseInt(selectedYear) + 1));
 		}
 	};
 
 	return (
-		<main className="flex p-4 flex-col gap-4 bg-[#1a1c23] rounded-lg">
-			<section className="flex items-center w-full justify-center gap-2">
+		<main className="flex min-w-[640px] h-max  p-4 flex-col items-center justify-start gap-4 bg-[#1a1c23] rounded-lg">
+			<section className="flex items-center w-[50%] justify-between gap-2">
 				<button
-					onClick={handlePreviousMonth}
+					onClick={handlePrevious}
 					className="rounded-[50%] p-2 text-[14px] text-white bg-[#5799cb] hover:bg-[#2c88cc] transition-[600ms]"
 					title="left"
 				>
 					<FaChevronLeft />
 				</button>
-				<section className="flex flex-col items-center">
-					<div className="text-white text-[32px]">{selectedYear}</div>
+				<section
+					title="Month And Year"
+					onClick={() => setDateMode("Month")}
+					className={`flex flex-col  text-white items-center select-none min-w-[200px] rounded-md  ${
+						dateMode === "Date" ? "hover:bg-[#363a49] cursor-pointer" : ""
+					} transition-[600ms]`}
+				>
+					<div
+						className={`text-[32px] ${
+							dateMode === "Month" && "animate-blink"
+						} `}
+					>
+						{selectedYear}
+					</div>
 					<section>
-						<select
-							value={selectedMonth}
-							onChange={(e) => setSelectedMonth(e.target.value)}
-							className="bg-transparent text-[20px] text-white appearance-none max-w-max text-center hover:text-[#2c88cc] transition-[600ms]"
-							title="month"
+						<div
+							className={`bg-transparent text-[20px] appearance-none max-w-max text-center ${
+								dateMode === "Date" && "animate-blink"
+							}`}
 						>
-							{months.map((month, index) => (
-								<option
-									className="text-black text-[14px]"
-									key={index}
-									value={String(index + 1)}
-								>
-									{month}
-								</option>
-							))}
-						</select>
+							{dateMode === "Date"
+								? months[parseInt(selectedMonth) - 1]
+								: "Select Month"}
+						</div>
 					</section>
 				</section>
 				<button
-					onClick={handleNextMonth}
+					onClick={handleNext}
 					className="rounded-[50%] p-2 text-[14px] text-white bg-[#5799cb] hover:bg-[#2c88cc] transition-[600ms]"
 					title="left"
 				>
 					<FaChevronRight />
 				</button>
 			</section>
-			<main>
-				<div className="grid gap-[2px] rounded-lg grid-cols-7 max-w-max ">
-					{days.map((_, index) => (
-						<Cells type="head" key={index}>
-							{days[index]}
-						</Cells>
-					))}
+			{dateMode === "Date" ? (
+				<div className="w-full">
+					<DateSection
+						firstDateDay={firstDateDay}
+						totalDay={totalDay}
+						lastDateDay={lastDateDay}
+						shownDate={shownDate}
+						focusDate={focusDate}
+						setFocusDate={setFocusDate}
+						previousMonthTotalDay={previousMonthTotalDay}
+					/>
 				</div>
-				<section className="grid gap-[2px] rounded-lg grid-cols-7 max-w-max">
-					{Array.from({ length: firstDateDay }).map((_, index) => (
-						<Cells type="blur" key={index}>
-							{previousMonthTotalDay - (firstDateDay - index) + 1}
-						</Cells>
-					))}
-					{Array.from({ length: totalDay }).map((_, index) => (
-						<Cells key={index}>{index + 1}</Cells>
-					))}
-					{Array.from({ length: 6 - lastDateDay }).map((_, index) => (
-						<Cells type="blur" key={index}>
-							{index + 1}
-						</Cells>
-					))}
-				</section>
-			</main>
+			) : (
+				<div className="w-full">
+					<MonthSection
+						setDateMode={setDateMode}
+						setSelectedMonth={setSelectedMonth}
+						months={months}
+					/>
+				</div>
+			)}
 		</main>
 	);
 };
