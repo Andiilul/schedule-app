@@ -29,18 +29,20 @@ export const Cells: React.FC<CellsProps> = ({
 				{children}
 				{badge && badge > 0 && badge <= 4 ? (
 					<section className="absolute left-0 bottom-0 grid w-full h-1 grid-cols-4 gap-1">
-						{Array.from({ length: badge }).map((_, index) => (
-							<div
-								key={index}
-								className={`h-[3px] rounded-sm bg-blue-${
-									300 + (index + 1) * 100
+						{Array.from({ length: badge }).map((_, index) => {
+							const color = ["bg-purple-300","bg-purple-400","bg-purple-500","bg-purple-600"]
+							return (
+								<div
+									key={index}
+									className={`h-[3px] rounded-sm ${color[index]}
 								}`}
-							></div>
-						))}
+								></div>
+							);
+						})}
 					</section>
 				) : badge && badge > 4 ? (
 					<section className="absolute left-0 bottom-0 w-full h-1  gap-1">
-						<div className="h-[3px] rounded-sm bg-gradient-to-r from-blue-500 to-blue-800"></div>
+						<div className="h-[3px] rounded-sm bg-gradient-to-r from-purple-500 to-purple-800"></div>
 					</section>
 				) : (
 					""

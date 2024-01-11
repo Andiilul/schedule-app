@@ -1,5 +1,7 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Memo } from "../IMemo";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { Todo } from "./ToDo";
 
 interface SchedulerProps {
 	focusDate: string;
@@ -7,7 +9,11 @@ interface SchedulerProps {
 	setMemo: React.Dispatch<React.SetStateAction<Memo[]>>;
 }
 
-export const Scheduler: React.FC<SchedulerProps> = ({ focusDate, memo , setMemo }) => {
+export const Scheduler: React.FC<SchedulerProps> = ({
+	focusDate,
+	memo,
+	setMemo,
+}) => {
 	const [isInput, setIsInput] = useState<boolean>(false);
 
 	const isMemo = memo.some((item) => item.date === focusDate);
@@ -25,44 +31,49 @@ export const Scheduler: React.FC<SchedulerProps> = ({ focusDate, memo , setMemo 
 
 	const handleSaveInput = () => {
 		if (time && time.length !== 0) {
-			const existingMemoIndex = memo.findIndex(
-				(item) => item.date === focusDate
-			);
+			if (content && content !== "") {
+				const existingMemoIndex = memo.findIndex(
+					(item) => item.date === focusDate
+				);
 
-			if (existingMemoIndex !== -1) {
-				const updatedMemo = [...memo];
-				const updatedMemoList = [
-					...updatedMemo[existingMemoIndex].memoList,
-					{
-						content: content,
-						time: time,
-					},
-				];
-
-				updatedMemo[existingMemoIndex] = {
-					...updatedMemo[existingMemoIndex],
-					memoList: updatedMemoList,
-				};
-
-				setMemo(updatedMemo);
-			} else {
-				const newMemo: Memo = {
-					date: focusDate,
-					memoList: [
+				if (existingMemoIndex !== -1) {
+					const updatedMemo = [...memo];
+					const updatedMemoList = [
+						...updatedMemo[existingMemoIndex].memoList,
 						{
 							content: content,
 							time: time,
 						},
-					],
-				};
+					];
 
-				setMemo((prevMemo) => [...prevMemo, newMemo]);
+					updatedMemo[existingMemoIndex] = {
+						...updatedMemo[existingMemoIndex],
+						memoList: updatedMemoList,
+					};
+
+					setMemo(updatedMemo);
+				} else {
+					const newMemo: Memo = {
+						date: focusDate,
+						memoList: [
+							{
+								content: content,
+								time: time,
+							},
+						],
+					};
+
+					setMemo((prevMemo) => [...prevMemo, newMemo]);
+				}
+
+				window.alert("Success");
+				setIsInput(false);
+				setContent("");
+				setTime("00:00");
+			} else {
+				window.alert("Invalid Content");
+				return 0;
 			}
-
-			window.alert("Success");
-			setIsInput(false);
-			setContent("");
-			setTime("00:00");
 		} else {
 			window.alert("Invalid Time");
 		}
@@ -72,13 +83,31 @@ export const Scheduler: React.FC<SchedulerProps> = ({ focusDate, memo , setMemo 
 	const handleCancelInput = () => {
 		setIsInput(false);
 		setTime("00:00");
+		setContent("");
 	};
+
+	useEffect(() => {
+		setIsInput(false);
+		setTime("00:00");
+		setContent("");
+	}, [focusDate]);
+
+	const schedulerDate = new Date(focusDate);
 
 	return (
 		<div className="flex flex-col gap-3">
-			<main className="bg-dark shadow-md rounded-lg w-80 min-h-[240px] h-max max-h-[520px] flex flex-col">
+			<main className="bg-dark shadow-lg rounded-lg w-80 min-h-[240px] overflow-hidden h-max max-h-[480px] flex flex-col">
 				<section className="text-white bg-lighthover text-[16px] w-full p-4 shadow-md">
 					Schedule
+				</section>
+				<section className="p-2 text-primary flex gap-2 items-center">
+					<FaRegCalendarAlt />{" "}
+					<span className="text-[14px]">
+						{schedulerDate.toLocaleString("default", { weekday: "short" })},{" "}
+						{schedulerDate.getDate()}{" "}
+						{schedulerDate.toLocaleString("default", { month: "long" })}{" "}
+						{schedulerDate.getFullYear()}
+					</span>
 				</section>
 				{isInput ? (
 					<section className="w-full p-2 flex flex-col gap-2">
@@ -122,13 +151,23 @@ export const Scheduler: React.FC<SchedulerProps> = ({ focusDate, memo , setMemo 
 						</div>
 					</section>
 				) : isMemo ? (
-					<section>
+					<section className="overflow-auto">
 						{memo
 							.find((item) => item.date === focusDate)
 							?.memoList.map((memoItem, index) => (
-								<div key={index}>
-									<p>{memoItem.content}</p>
-								</div>
+								<>
+									<Todo
+										key={index}
+										content={memoItem.content}
+										time={memoItem.time}
+									/>
+									{index !==
+										(memo.find((item) => item.date === focusDate)?.memoList
+											.length ?? 0) -
+											1 && (
+										<section className="h-[0.2px] ml-[6px] mr-[6px] bg-[#ffffff2a]" />
+									)}
+								</>
 							))}
 					</section>
 				) : (
