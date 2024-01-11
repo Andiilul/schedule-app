@@ -6,6 +6,12 @@ Task Indicators: Each date in the calendar displays a visual indicator, showing 
 
 Time Customization: Enjoy flexibility with time customization. Set specific start and end times for events and tasks to better plan your day. The app accommodates your unique scheduling needs.
 
+Preview:
+![image](https://github.com/Andiilul/schedule-app/assets/115609076/05f9cc49-2e7e-4323-9018-ca02b8c020be)
+
+![image](https://github.com/Andiilul/schedule-app/assets/115609076/06bd59b2-b536-4dc3-998b-71abbeba30cc)
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
